@@ -1,0 +1,10 @@
+node_modules/
+_content/**/*.png
+_content/**/*.jpg
+_content/**/*.jpeg
+_content/**/*.gif
+_ir_deck/*.png
+_ir\ deck/
+.claude/
+.DS_Store
+*.log
