@@ -41,7 +41,7 @@ DISCORD FORMAT RULES:
 5. Must have a crypto on-chain paragraph (exchange flows, ETF, whale)
 6. Must have a perp paragraph (OI, funding, Hyperliquid mention)
 7. Must end with "Level to watch" line + Regime label (Trending/Choppy/High-Vol/Ranging)
-8. Length: 150–200 words total (Discord cut)
+8. Length: 170–250 words total (Discord cut)
 
 QUALITY RULES:
 - No AI filler phrases ("it is important to note", "furthermore", "it's worth mentioning")

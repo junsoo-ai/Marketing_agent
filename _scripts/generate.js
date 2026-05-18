@@ -164,10 +164,10 @@ STRICT RULES:
 5. EN: "Five things worth reading today:" / KO: "주목할 만한 다섯 가지 기사:" header
 6. Exactly 5 bullets (•), each a DIFFERENT story/region
 7. One on-chain paragraph with specific numbers
-8. One perp paragraph mentioning Hyperliquid with specific numbers
-9. "Level to watch: ..." line then "Regime: [label]." on separate line
-10. EN: "Regime: Choppy." / KO: "장세: 횡보(Choppy)." — use correct label for market
-11. NO markdown (no **, no ##). NO vague numbers. 170-200 words each.
+8. One perp paragraph mentioning Hyperliquid with specific numbers — Korean must use natural Korean financial phrasing, NOT translated English
+9. "Level to watch: $X,XXX (one short label)." — EXACTLY ONE sentence, no elaboration
+10. "Regime: [label]." on its own line immediately after — EN: Trending/Choppy/High-Vol/Ranging · KO: 상승추세/횡보/고변동/레인지 (English label in parentheses)
+11. NO markdown (no **, no ##). NO vague numbers. 170-250 words each.
 
 OUTPUT (nothing outside markers):
 ===DISCORD_EN===
