@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Auto-generate daily Discord content
+// Auto-generate daily Discord + update content
 // Usage: node _scripts/generate.js <YYYY-MM-DD>
 // Requires: ANTHROPIC_API_KEY, TAVILY_API_KEY
 
@@ -11,83 +11,20 @@ const date = process.argv[2] || new Date().toISOString().slice(0, 10);
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const tavilyKey = process.env.TAVILY_API_KEY;
 
-if (!tavilyKey) {
-  console.error('Error: TAVILY_API_KEY not set');
-  process.exit(1);
-}
+if (!tavilyKey) { console.error('Error: TAVILY_API_KEY not set'); process.exit(1); }
 
 async function tavilySearch(query) {
   const res = await fetch('https://api.tavily.com/search', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      api_key: tavilyKey,
-      query,
-      search_depth: 'advanced',
-      max_results: 5,
-      include_answer: true,
-    }),
+    body: JSON.stringify({ api_key: tavilyKey, query, search_depth: 'advanced', max_results: 5, include_answer: true }),
   });
   const data = await res.json();
   const answer = data.answer ? `ANSWER: ${data.answer}\n\n` : '';
-  const results = (data.results || [])
-    .map(r => `[${r.url}] ${r.title}\n${(r.content || '').slice(0, 500)}`)
-    .join('\n\n');
-  return answer + results;
+  return answer + (data.results || []).map(r => `[${r.url}] ${r.title}\n${(r.content || '').slice(0, 500)}`).join('\n\n');
 }
 
-async function main() {
-  console.log(`Generating content for ${date}...`);
-
-  // 1. Crypto prices from CoinGecko
-  console.log('Fetching crypto prices...');
-  const cgUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true&include_7d_change=true';
-  const cgHeaders = process.env.COINGECKO_API_KEY
-    ? { 'x-cg-demo-api-key': process.env.COINGECKO_API_KEY }
-    : {};
-  const cgRes = await fetch(cgUrl, { headers: cgHeaders });
-  const cg = await cgRes.json();
-
-  if (!cg.bitcoin || !cg.ethereum) {
-    throw new Error(`CoinGecko returned unexpected data: ${JSON.stringify(cg)}`);
-  }
-
-  const fmtPct = (n) => n == null ? '?' : (n > 0 ? '+' : '') + Number(n).toFixed(1);
-  const btcPrice = `BTC $${Math.round(cg.bitcoin.usd).toLocaleString()} (${fmtPct(cg.bitcoin.usd_24h_change)}% 24h | ${fmtPct(cg.bitcoin.usd_7d_change)}% 7d)`;
-  const ethPrice = `ETH $${Math.round(cg.ethereum.usd).toLocaleString()} (${fmtPct(cg.ethereum.usd_24h_change)}% 24h | ${fmtPct(cg.ethereum.usd_7d_change)}% 7d)`;
-
-  // 2. Market data searches (prices + news)
-  console.log('Searching market data and news...');
-  const [
-    indicesData,
-    commoditiesData,
-    macro1, macro2, macro3,
-    crypto1, crypto2, crypto3, crypto4,
-  ] = await Promise.all([
-    tavilySearch(`Nasdaq S&P 500 Dow Jones closing price today ${date}`),
-    tavilySearch(`Gold WTI Brent crude oil DXY 10-year Treasury yield VIX price today ${date}`),
-    tavilySearch(`major global markets economic news event ${date}`),
-    tavilySearch(`Federal Reserve inflation CPI central bank rate decision ${date}`),
-    tavilySearch(`geopolitics trade policy oil OPEC currency news ${date}`),
-    tavilySearch(`bitcoin exchange outflow inflow reserve on-chain whale ${date}`),
-    tavilySearch(`bitcoin ethereum ETF flows institutional open interest funding rate ${date}`),
-    tavilySearch(`Hyperliquid BTC ETH perpetual funding rate open interest ${date}`),
-    tavilySearch(`bitcoin ethereum key price level support resistance technical ${date}`),
-  ]);
-
-  // 3. Load previous day content for dedup
-  const prevDate = new Date(date);
-  prevDate.setDate(prevDate.getDate() - 1);
-  const prevDateStr = prevDate.toISOString().slice(0, 10);
-  const prevPath = path.join(__dirname, '..', '_content', prevDateStr, 'daily-discord-en.md');
-  const prevContent = fs.existsSync(prevPath)
-    ? `PREVIOUS DAY CONTENT (do NOT repeat these stories):\n${fs.readFileSync(prevPath, 'utf8')}`
-    : '';
-
-  // 4. Generate with Claude
-  console.log('Generating with Claude...');
-
-  const referenceExample = `BTC $76,934 (-1.0% 24h | -3.5% 7d) · ETH $2,115 (-2.5% 24h | -5.8% 7d)
+const REF_EN_DISCORD = `BTC $76,934 (-1.0% 24h | -3.5% 7d) · ETH $2,115 (-2.5% 24h | -5.8% 7d)
 Nasdaq 26,225 (-1.5% 24h) · S&P 7,409 (-1.2% 24h) · Dow 49,526 (-1.1% 24h)
 Gold $4,544 · WTI $101.0 · Brent $109.3 · DXY 99.2 · 10Y 4.44% · VIX 18.4
 Warsh just took the Fed chair and the bond market isn't celebrating — 30-year yields cleared 5% for the first time since 2007.
@@ -107,25 +44,75 @@ BTC perp OI contracted through the weekend as ETH underperformed BTC on a 24h ba
 Level to watch: $79,383 (200-DMA). Spot is 3.3% below it. Daily close above reclaims the trend reference.
 Regime: Choppy.`;
 
-  const prompt = `You are the ClyptAI daily market writer. Generate today's Discord post matching EXACTLY the style, length, and structure of the reference example below.
+const REF_KO_DISCORD = `BTC $76,934 (-1.0% 24h | -3.5% 7d) · ETH $2,115 (-2.5% 24h | -5.8% 7d)
+나스닥 26,225 (-1.5% 24h) · S&P 7,409 (-1.2% 24h) · 다우 49,526 (-1.1% 24h)
+금 $4,544 · WTI $101.0 · 브렌트 $109.3 · DXY 99.2 · 10년물 4.44% · VIX 18.4
+워시가 연준 의장직을 막 인수했고, 채권 시장은 환영하지 않고 있다 — 30년 금리가 2007년 이후 처음으로 5%를 돌파했다.
 
-TODAY'S DATE: ${date}
+주목할 만한 다섯 가지 기사:
 
-REFERENCE EXAMPLE (match this format exactly — same depth, same word count ~180 words, same structure):
-${referenceExample}
+• S&P 500, 금요일 1.24% 하락해 7,409 마감. 워시 인준, 금리 급등, 성과 없이 끝난 미중 정상회담이 같은 세션에 겹쳤다.
+• 미국 4월 CPI 3.8% 상승 — 예상치 3.7% 상회. 에너지가 전년 대비 18% 올랐다. 금리 인하 가능성은 사실상 소멸했다.
+• 호주 중앙은행, 4.35%로 인상 — 2026년 세 번째 연속 인상, 8대 1 표결. 중동발 에너지 비용이 올해 중반 인플레이션 정점 추정치를 4.8%로 끌어올렸다.
+• IEA, 2026년 글로벌 원유 수요 420 kb/d 감소 전망. 브렌트유는 호르무즈 공급 리스크가 약한 수요 신호를 압도하며 여전히 $109를 기록했다.
+• 다우, 537포인트 하락해 49,526 금요일 마감. 금리 압력이 지배하면서 주요 지수 모두 하락 마감.
 
----
-LIVE CRYPTO PRICES (use these exactly for line 1):
+24시간 동안 25,644 BTC가 거래소에서 인출됐다 — 보유량이 7년 만의 최저치인 221만 BTC로 감소했다. 현물 ETF는 5월 9일까지 9거래일 연속 순유입을 기록하며 약 27억 달러를 끌어들였고, 블랙록 IBIT와 피델리티 FBTC가 선두.
+
+무기한 선물 OI는 주말 동안 축소됐으며, ETH가 BTC(1.0%) 대비 2.5% 하락하며 알트코인 디레버리징 신호를 보였다. 하이퍼리퀴드 BTC-PERP 펀딩 중립 근접 — 현재 가격대에서 뚜렷한 방향성 편향 없음.
+
+주목할 레벨: $79,383 (200일 SMA). 현물은 3.3% 아래에 위치. 일봉 종가 탈환 시 추세 기준선 회복.
+장세: 횡보(Choppy).`;
+
+async function main() {
+  console.log(`Generating content for ${date}...`);
+
+  // 1. Crypto prices
+  console.log('Fetching crypto prices...');
+  const cgUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true&include_7d_change=true';
+  const cgHeaders = process.env.COINGECKO_API_KEY ? { 'x-cg-demo-api-key': process.env.COINGECKO_API_KEY } : {};
+  const cgRes = await fetch(cgUrl, { headers: cgHeaders });
+  const cg = await cgRes.json();
+  if (!cg.bitcoin || !cg.ethereum) throw new Error(`CoinGecko error: ${JSON.stringify(cg)}`);
+
+  const fmtPct = (n) => n == null ? '?' : (n > 0 ? '+' : '') + Number(n).toFixed(1);
+  const btcPrice = `BTC $${Math.round(cg.bitcoin.usd).toLocaleString()} (${fmtPct(cg.bitcoin.usd_24h_change)}% 24h | ${fmtPct(cg.bitcoin.usd_7d_change)}% 7d)`;
+  const ethPrice = `ETH $${Math.round(cg.ethereum.usd).toLocaleString()} (${fmtPct(cg.ethereum.usd_24h_change)}% 24h | ${fmtPct(cg.ethereum.usd_7d_change)}% 7d)`;
+
+  // 2. Searches
+  console.log('Searching market data...');
+  const [indicesData, commoditiesData, macro1, macro2, macro3, crypto1, crypto2, crypto3, crypto4] = await Promise.all([
+    tavilySearch(`Nasdaq S&P 500 Dow Jones closing price ${date}`),
+    tavilySearch(`Gold WTI Brent crude DXY 10-year Treasury VIX price ${date}`),
+    tavilySearch(`major global markets economic news ${date}`),
+    tavilySearch(`Federal Reserve inflation CPI central bank ${date}`),
+    tavilySearch(`geopolitics trade policy oil OPEC news ${date}`),
+    tavilySearch(`bitcoin exchange outflow inflow reserve on-chain ${date}`),
+    tavilySearch(`bitcoin ethereum ETF flows open interest funding rate ${date}`),
+    tavilySearch(`Hyperliquid BTC ETH perpetual funding rate OI ${date}`),
+    tavilySearch(`bitcoin ethereum price level support resistance ${date}`),
+  ]);
+
+  // 3. Previous day for dedup
+  const prevDate = new Date(date);
+  prevDate.setDate(prevDate.getDate() - 1);
+  const prevPath = path.join(__dirname, '..', '_content', prevDate.toISOString().slice(0, 10), 'daily-discord-en.md');
+  const prevContent = fs.existsSync(prevPath)
+    ? `PREVIOUS DAY (do NOT repeat these stories):\n${fs.readFileSync(prevPath, 'utf8')}`
+    : '';
+
+  const searchData = `
+LIVE CRYPTO PRICES (use exactly for line 1):
 ${btcPrice}
 ${ethPrice}
 
-INDICES & PRICE DATA (extract exact numbers for lines 2-3):
+INDICES DATA (extract numbers for line 2):
 ${indicesData}
 
-COMMODITIES DATA (Gold, WTI, Brent, DXY, 10Y, VIX for line 3):
+COMMODITIES DATA (extract numbers for line 3):
 ${commoditiesData}
 
-MACRO NEWS (pick 5 distinct events, each different region/asset class):
+MACRO NEWS:
 ${macro1}
 
 ${macro2}
@@ -141,60 +128,121 @@ ${crypto3}
 
 ${crypto4}
 
-${prevContent}
+${prevContent}`;
+
+  // 4. Generate Discord cuts
+  console.log('Generating Discord cuts...');
+  const discordMsg = await client.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 3000,
+    messages: [{ role: 'user', content: `You are the ClyptAI daily market writer. Generate today's Discord posts matching EXACTLY the style and structure of the reference examples.
+
+TODAY: ${date}
+
+ENGLISH REFERENCE (match format exactly):
+${REF_EN_DISCORD}
+
+KOREAN REFERENCE (match format exactly):
+${REF_KO_DISCORD}
 
 ---
-STRICT FORMAT RULES — violations will cause rejection:
-1. Line 1: "BTC $X (±X.X% 24h | ±X.X% 7d) · ETH $X (±X.X% 24h | ±X.X% 7d)" — use live prices above
-2. Line 2: "Nasdaq X,XXX (±X.X% 24h) · S&P X,XXX (±X.X% 24h) · Dow XX,XXX (±X.X% 24h)" — extract from search data
-3. Line 3: "Gold $X,XXX · WTI $XXX.X · Brent $XXX.X · DXY XX.X · 10Y X.XX% · VIX XX.X" — spot prices only
-4. One punchy intro sentence summarizing the biggest macro theme of the day
-5. "Five things worth reading today:" header — exactly this text
-6. Exactly 5 bullet points (•), each covering a DIFFERENT story/region/asset
-7. One on-chain paragraph: exchange flows + ETF flows + institutional positioning (specific numbers)
-8. One perp paragraph: OI + funding rate + Hyperliquid mention (specific numbers)
-9. Last line: "Level to watch: $X (indicator). Spot X.X% below/above it. [one-sentence context]"
-10. Final line: "Regime: [Trending/Choppy/High-Vol/Ranging]."
-11. NO markdown — no **, no ##, no [], no backticks
-12. NO vague language — every number must be specific
-13. 170–200 words total
-14. Each bullet: 1-2 sentences max, punchy, data-led, variable length
+${searchData}
 
-OUTPUT FORMAT — nothing outside these markers:
+STRICT RULES:
+1. Line 1: "BTC $X (±X.X% 24h | ±X.X% 7d) · ETH $X (±X.X% 24h | ±X.X% 7d)" — use live prices exactly
+2. Line 2: "Nasdaq X,XXX (±X.X% 24h) · S&P X,XXX (±X.X% 24h) · Dow XX,XXX (±X.X% 24h)" — from search data
+3. Line 3: "Gold $X,XXX · WTI $XXX.X · Brent $XXX.X · DXY XX.X · 10Y X.XX% · VIX XX.X" — spot only
+4. One punchy intro sentence
+5. EN: "Five things worth reading today:" / KO: "주목할 만한 다섯 가지 기사:" header
+6. Exactly 5 bullets (•), each a DIFFERENT story/region
+7. One on-chain paragraph with specific numbers
+8. One perp paragraph mentioning Hyperliquid with specific numbers
+9. "Level to watch: ..." line then "Regime: [label]." on separate line
+10. EN: "Regime: Choppy." / KO: "장세: 횡보(Choppy)." — use correct label for market
+11. NO markdown (no **, no ##). NO vague numbers. 170-200 words each.
+
+OUTPUT (nothing outside markers):
 ===DISCORD_EN===
-[English content]
+[English]
 ===END_DISCORD_EN===
 
 ===DISCORD_KO===
-[Korean content — natural Korean financial writing, same structure, not a word-for-word translation]
-===END_DISCORD_KO===`;
-
-  const msg = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 3000,
-    messages: [{ role: 'user', content: prompt }],
+[Korean]
+===END_DISCORD_KO===` }],
   });
 
-  const output = msg.content[0].text;
+  const discordOut = discordMsg.content[0].text;
+  const enDiscord = discordOut.match(/===DISCORD_EN===\n([\s\S]+?)\n===END_DISCORD_EN===/)?.[1]?.trim();
+  const koDiscord = discordOut.match(/===DISCORD_KO===\n([\s\S]+?)\n===END_DISCORD_KO===/)?.[1]?.trim();
+  if (!enDiscord || !koDiscord) { console.error('Discord parse failed:\n', discordOut); process.exit(1); }
 
-  const enMatch = output.match(/===DISCORD_EN===\n([\s\S]+?)\n===END_DISCORD_EN===/);
-  const koMatch = output.match(/===DISCORD_KO===\n([\s\S]+?)\n===END_DISCORD_KO===/);
+  // 5. Generate daily updates (longer format)
+  console.log('Generating daily updates...');
+  const updateMsg = await client.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 6000,
+    messages: [{ role: 'user', content: `You are the ClyptAI daily market writer. Generate full daily update files for ${date}.
 
-  if (!enMatch || !koMatch) {
-    console.error('Failed to parse output:\n', output);
-    process.exit(1);
-  }
+${searchData}
 
+Generate two files following this EXACT structure:
+
+ENGLISH FORMAT:
+# CLYPT Daily
+**[Weekday], [Month DD], [YYYY] · 06:00 KST**
+
+---
+## SECTION 1 — GLOBAL EVENTS
+
+**[Bold headline for event 1]**
+[2-3 sentence paragraph with specific data and source citation in parentheses at end]
+
+[Repeat for 5 distinct events]
+
+---
+## SECTION 2 — CRYPTO MARKETS
+
+**Volume / derivatives signal:** [1-2 sentences with specific numbers. *(Source, date)*]
+
+**Whale / on-chain signal:** [1-2 sentences with specific numbers. *(Source, date)*]
+
+**ETF / institutional flow:** [1-2 sentences with specific numbers. *(Source, date)*]
+
+**Hyperliquid Desk:** [1-2 sentences with specific numbers. *(Source, date)*]
+
+**Level to watch:** [1-2 sentences with specific price level and context. *(Source, date)*]
+
+**Regime:** [Label] — [1 sentence rationale].
+
+---
+*Data: [comma-separated sources]. As of [time] UTC [date]. Not financial advice.*
+
+KOREAN FORMAT: Same structure, all text in natural Korean financial writing.
+
+OUTPUT (nothing outside markers):
+===UPDATE_EN===
+[Full English daily update]
+===END_UPDATE_EN===
+
+===UPDATE_KO===
+[Full Korean daily update]
+===END_UPDATE_KO===` }],
+  });
+
+  const updateOut = updateMsg.content[0].text;
+  const enUpdate = updateOut.match(/===UPDATE_EN===\n([\s\S]+?)\n===END_UPDATE_EN===/)?.[1]?.trim();
+  const koUpdate = updateOut.match(/===UPDATE_KO===\n([\s\S]+?)\n===END_UPDATE_KO===/)?.[1]?.trim();
+  if (!enUpdate || !koUpdate) { console.error('Update parse failed:\n', updateOut); process.exit(1); }
+
+  // 6. Save all 4 files
   const contentDir = path.join(__dirname, '..', '_content', date);
   fs.mkdirSync(contentDir, { recursive: true });
-  fs.writeFileSync(path.join(contentDir, 'daily-discord-en.md'), enMatch[1].trim() + '\n');
-  fs.writeFileSync(path.join(contentDir, 'daily-discord-ko.md'), koMatch[1].trim() + '\n');
+  fs.writeFileSync(path.join(contentDir, 'daily-discord-en.md'), enDiscord + '\n');
+  fs.writeFileSync(path.join(contentDir, 'daily-discord-ko.md'), koDiscord + '\n');
+  fs.writeFileSync(path.join(contentDir, 'daily-update-en.md'), enUpdate + '\n');
+  fs.writeFileSync(path.join(contentDir, 'daily-update-ko.md'), koUpdate + '\n');
 
-  console.log(`Saved _content/${date}/daily-discord-en.md`);
-  console.log(`Saved _content/${date}/daily-discord-ko.md`);
+  console.log(`Saved all 4 files to _content/${date}/`);
 }
 
-main().catch(err => {
-  console.error('Generation failed:', err.message);
-  process.exit(1);
-});
+main().catch(err => { console.error('Generation failed:', err.message); process.exit(1); });
