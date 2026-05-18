@@ -1,0 +1,36 @@
+name: Daily Content Review
+
+on:
+  push:
+    paths:
+      - '_content/**'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to review (YYYY-MM-DD). Defaults to today.'
+        required: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Run review and notify Slack
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          DATE="${{ github.event.inputs.date }}"
+          if [ -z "$DATE" ]; then
+            DATE=$(date -u +%Y-%m-%d)
+          fi
+          echo "Reviewing content for $DATE"
+          node _scripts/notify-slack.js "$DATE"
