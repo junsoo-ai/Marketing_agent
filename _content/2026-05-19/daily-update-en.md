@@ -3,42 +3,45 @@
 
 ---
 
-**Line 1 — Crypto:** BTC $76,515 (−1.7% 24h) · ETH $2,103 (−3.5% 24h)
-**Line 2 — Indices:** Nasdaq 26,225 · S&P 500 7,408 · Dow 49,504
-**Line 3 — Macro:** Gold $4,504 · WTI $103.47 · Brent $111.38 · DXY 99.31 · 10Y 4.623% · VIX 18.43
+**Line 1 — Crypto:** BTC $76,602 (−1.6% 24h) · ETH $2,104 (−3.4% 24h)
+**Line 2 — Indices:** Nasdaq 26,225 · S&P 500 7,409 · Dow 49,504
+**Line 3 — Macro:** Gold $4,551 · WTI $103.5 · Brent $111.4 · DXY 99.3 · VIX 18.4 · US 10Y 4.62%
 
 ---
+
 ## SECTION 1 — GLOBAL EVENTS
 
-**Inflation trajectory worsens — top forecasters now project 6% CPI by Q2 2026**
-A survey of the nation's leading economists published Friday has inflation peaking at 6% for the second quarter, a significant revision upward driven by energy and food price surges. The Federal Reserve, now under chair Kevin Warsh, has made clear that rate cuts remain entirely off the table in this environment. With April CPI already printing at 3.8% — above the 3.7% forecast — and the Producer Price Index at 6%, the policy path has narrowed sharply. *(CNBC, May 15, 2026)*
+**Inflation now on track for 6% by Q2 — the Fed's worst-case scenario is becoming the base case**
+A survey of the nation's top economic forecasters published Friday projects consumer price inflation will hit 6% by the second quarter of 2026, a sharp acceleration from April's CPI print of 3.8%. Energy prices are up 18% year-over-year and food costs are rising in parallel, driven heavily by the disruption to Middle East supply chains. The Federal Reserve, now under incoming Chair Warsh, has no credible path to rate cuts and may be forced to consider additional tightening if the trajectory holds. *(CNBC, May 15, 2026)*
 
-**Bond markets price in new risk premium as long-end yields keep climbing**
-Longer-duration debt is commanding a measurable premium as investors demand compensation for geopolitical and macroeconomic uncertainty. The 30-year UK gilt yield closed at 5.77%, its highest level since 1998, while the US 10-year Treasury yield sits at 4.623% — up 2.4 basis points on the day. Globally, energy price pressures and central bank credibility concerns are keeping the long end elevated with no clear catalyst for relief. *(ATB Financial Weekly Market Update, May 19, 2026)*
+**Bond markets price in a new fiscal and inflation premium — UK 30-year yields hit 1998 highs**
+Longer-duration sovereign debt sold off globally over the past week as investors demanded additional yield to compensate for rising geopolitical and fiscal uncertainty. The 30-year UK gilt yield closed at 5.77%, its highest level since 1998, pressured by global energy costs and deteriorating confidence in near-term fiscal consolidation. In the US, the 10-year Treasury yield moved to 4.62% on Tuesday and the 30-year crossed 5.14%, a level last seen in 2007 that has now become an anchor for equity valuations. *(ATB Financial Weekly Market Update, May 19, 2026)*
 
-**OPEC trims 2026 demand forecast; geopolitics keep prices elevated regardless**
-In its May monthly oil market report, OPEC cut its 2026 global oil demand growth estimate, now projecting Q2 average demand at 104.57 million barrels per day — a reduction of 500,000 bpd from the prior month's forecast. Despite the demand downgrade, WTI futures rose to $103.47 (+2.43%) and Brent to $111.38 (+1.94%) on Friday, as Hormuz supply-disruption risk continues to override the fundamental demand signal. OPEC simultaneously raised its 2027 demand outlook, suggesting the cut is seen as temporary. *(GuruFocus / TASS, May 13, 2026)*
+**OPEC cuts 2026 demand growth forecast as Middle East tensions constrain supply routes**
+OPEC's May monthly oil market report, released May 13, lowered its 2026 global demand growth estimate, now forecasting average Q2 demand at 104.57 million barrels per day — down 500,000 b/d from last month's projection. Despite the weaker demand outlook, Brent crude rose to $111.38 on Tuesday and WTI climbed to $103.47 as markets continue to price in Hormuz supply-risk premium over fundamental demand signals. The Strait of Hormuz remains closed and US-Iran peace talks have stalled, leaving no near-term resolution in sight. *(OPEC Monthly Oil Market Report via TASS and GuruFocus, May 13, 2026; Investing.com, May 19, 2026)*
 
-**Alibaba rallies 8.2% as investors reward AI spending despite 84% profit collapse**
-US-listed shares of Alibaba surged 8.2% last week after the company reported an 84% plunge in core profitability — a result investors chose to overlook in favour of aggressive technology spending commitments. The move reflects a bifurcation in market sentiment: capital is rotating toward companies demonstrating AI infrastructure build-out, even where near-term earnings are severely impaired. The reaction stands in contrast to the broader risk-off tone gripping equities and bonds. *(ATB Financial Weekly Market Update, May 19, 2026)*
+**Alibaba rallies 8.2% on aggressive AI spending pledge despite 84% core profit collapse**
+US-listed shares of Alibaba surged 8.2% as investors rewarded the company's commitment to large-scale technology and AI infrastructure investment, choosing to look past an 84% plunge in core profitability. The reaction illustrates a market preference in 2026 for growth narrative over near-term earnings quality, particularly in Chinese tech names where AI spending is viewed as a strategic moat. The move comes as US-China trade diplomacy remains unresolved following last week's summit that produced no concrete breakthroughs. *(ATB Financial Weekly Market Update, May 19, 2026)*
 
-**Major equity indices extend losing streak — VIX spikes 6.78% on Friday close**
-All three major US indices closed lower on Friday in a session dominated by yield pressure and macro anxiety: the S&P 500 fell 1.24% to 7,408, the Nasdaq shed 1.54% to 26,225, and the Dow dropped 1.07% to 49,504. The S&P 500 VIX closed at 18.43, up 6.78% on the day, reflecting a material uptick in short-term hedging activity. The Dollar Index firmed to 99.31 (+0.10%), adding pressure to commodities and risk assets simultaneously. *(Investing.com, May 15–16, 2026)*
+**Global central banks hold rates steady but signal prolonged restrictive stance amid energy shock**
+Major advanced-economy central banks have collectively adopted a posture of holding policy rates unchanged while monitoring inflation driven primarily by energy price pressures stemming from the US-Iran conflict, according to WTW's May 2026 Global Markets Overview. The framework — "hold and monitor" — reflects the difficulty of distinguishing between a supply-side energy shock, which monetary policy cannot directly address, and broadening demand-side inflation that would warrant additional hikes. With FOMC minutes due this week alongside UK CPI on Wednesday, the next 72 hours carry significant narrative weight for rate expectations globally. *(WTW Global Markets Overview, May 14, 2026; ThinkCapital Trading Week Ahead, May 19, 2026)*
 
 ---
+
 ## SECTION 2 — CRYPTO MARKETS
 
-**Volume / derivatives signal:** Bitcoin futures open interest across all exchanges stood at $61.9B as of May 15, with CME's OI-to-24h-volume ratio hitting 2.0071 — the highest on the board — indicating deep institutional positioning rather than short-term speculative churn. Perpetual funding on Hyperliquid's BTC-ETH perp book sits at −0.0007% per hour, consistent with a neutral-to-slightly-bearish bias and no dominant directional squeeze in play. *(AInvest / Hyperliquid Docs, May 18–19, 2026)*
+**Volume / derivatives signal:** Bitcoin futures open interest across all exchanges stood at $61.9B as of May 18, with CME's OI-to-24h-volume ratio at 2.0071 — the highest on the board — indicating deep institutional positioning rather than speculative churn. Hyperliquid's total platform open interest is $9.17B, and BTC-ETH perp funding sits at −0.0071% per hour, reflecting a mild bearish lean rather than a directional conviction. *(Ainvest / Hyperliquid Datawallet, May 18–19, 2026)*
 
-**Whale / on-chain signal:** Exchange BTC reserves have continued their structural decline, sitting near 2.21M BTC — a seven-year low — as the drain that accelerated through early May persists. Institutional accumulation remains net positive in aggregate, though corporate BTC purchases slowed approximately 80% month-over-month following the ETF outflow episode on May 13. *(BeInCrypto / Bitcoin Foundation, May 13–16, 2026)*
+**Whale / on-chain signal:** Exchange BTC reserves have continued their structural decline, sitting well below the 3.3M BTC peak seen in early 2022, with Glassnode tracking reserves near multi-year lows following sustained withdrawal pressure over recent weeks. The supply drain dynamic remains structurally bullish on a medium-term horizon even as spot price tests lower support. *(BeInCrypto / Glassnode via CoinGlass, May 2026)*
 
-**ETF / institutional flow:** Spot Bitcoin ETFs recorded a single-session record outflow of $635M on May 13, led by Grayscale (−$284.69M), ARK Invest ARKB (−$177.1M), and Fidelity FBTC (−$133.22M). Spot Ethereum ETFs added a net $153.25M in cumulative inflows through mid-May, with BlackRock's ETHA leading the ETH-side allocation — suggesting institutional appetite for ETH has not fully capitulated alongside the price decline. *(Bitcoin Foundation / CoinGlass, May 13–14, 2026)*
+**ETF / institutional flow:** The record single-day outflow event of $635M from Bitcoin spot ETFs on May 13 — led by Grayscale GBTC (−$284.69M), ARK ARKB (−$177.1M), and Fidelity FBTC (−$133.22M) — reflected macro-driven institutional de-risking rather than a structural reversal. Ethereum spot ETFs posted a net inflow of $153.25M as of mid-May, providing a partial offset; cumulative ETF net inflows since launch remain well above initial market expectations. *(Bitcoin Foundation / SoSoValue via CoinGlass, May 13–14, 2026)*
 
-**Hyperliquid Desk:** Hyperliquid's total open interest across all perpetual markets stands at $9.17B, reflecting sustained derivatives engagement on the platform despite broader market deleveraging. BTC-ETH perp funding is running at −0.0007% per hour — paid hourly — indicating shorts have a marginal structural edge but the position is far from extreme in either direction. *(Datawallet / Hyperliquid Docs, May 2026)*
+**Hyperliquid Desk:** Hyperliquid's BTC-ETH perpetual funding rate is running at −0.0007% per hour as of May 19, paid hourly against the spot oracle price — a near-neutral signal with a very slight short-side premium, consistent with the cautious sentiment seen across spot markets. Platform open interest of $9.17B confirms that capital has not exited the derivatives complex entirely despite spot weakness. *(Hyperliquid Docs / Datawallet, May 19, 2026)*
 
-**Level to watch:** BTC is currently trading at $76,515, approximately 3.6% below the 200-day moving average at $79,383 — the key trend reference that bulls need to reclaim on a daily close basis to shift the technical regime. Below spot, the next structural support cluster sits at $76,000, followed by $74,300; a daily close through $76,000 would open a clean technical path toward the lower band. *(Bitcoin Foundation, May 2026)*
+**Level to watch:** BTC is trading at $76,602, now pressing on the $76,000 structural support identified by analysts as the second key floor below $78,000. A daily close below $76,000 opens a path toward $74,300; a recovery back above $78,000 would be the minimum requirement to re-engage the medium-term bullish thesis. *(Bitcoin Foundation Price Perspectives, May 2026; Intellectia.ai, May 19, 2026)*
 
-**Regime:** Choppy, bearish lean — BTC has now printed three consecutive sessions below $79K, ETH is underperforming on a rolling basis (−3.5% vs −1.7% 24h), and the macro backdrop — rising yields, a firmer dollar, and a 6% inflation forecast — provides no near-term catalyst for a sustained recovery.
+**Regime:** Bearish pressure, macro-driven — Inflation at 3.8% and climbing toward a projected 6% Q2 peak, no Fed pivot in sight, global bond yields spiking, and oil supply risk sustained by Hormuz closure are collectively creating a risk-off environment that is weighing on both equities and crypto; until macro headwinds abate or a definitive support level holds with volume confirmation, price action remains defensive.
 
 ---
-*Data: Investing.com, ATB Financial, CNBC, GuruFocus, TASS, AInvest, Bitcoin Foundation, CoinGlass, Datawallet, Hyperliquid Docs, BeInCrypto, Yahoo Finance. As of 21:00 UTC May 18, 2026. Not financial advice.*
+
+*Data: CNBC, ATB Financial, OPEC/TASS/GuruFocus, WTW, ThinkCapital, Bitcoin Foundation, Intellectia.ai, Ainvest, Datawallet/Hyperliquid, BeInCrypto/Glassnode, SoSoValue/CoinGlass, Investing.com, Barchart. As of 21:00 UTC May 18, 2026. Not financial advice.*
