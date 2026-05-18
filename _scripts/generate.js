@@ -188,7 +188,7 @@ OUTPUT (nothing outside markers):
   console.log('Generating daily updates...');
   const updateMsg = await client.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 6000,
+    max_tokens: 8000,
     messages: [{ role: 'user', content: `You are the ClyptAI daily market writer. Generate full daily update files for ${date}.
 
 ${searchData}
