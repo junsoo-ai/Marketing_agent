@@ -38,34 +38,26 @@ const summary = summaryMatch ? summaryMatch[1].trim() : 'See details below.';
 const issuesMatch = reviewOutput.match(/ISSUES_COUNT:\s*(\d+)/);
 const issueCount = issuesMatch ? issuesMatch[1] : '?';
 
-// Bottom block: approve buttons on PASS, fix instructions on FAIL
-const bottomBlock = passed
-  ? {
-      type: 'actions',
-      elements: [
-        {
-          type: 'button',
-          text: { type: 'plain_text', text: '🇺🇸 Post EN to Discord' },
-          style: 'primary',
-          value: `${date}|en`,
-          action_id: 'post_discord_en',
-        },
-        {
-          type: 'button',
-          text: { type: 'plain_text', text: '🇰🇷 Post KO to Discord' },
-          style: 'primary',
-          value: `${date}|ko`,
-          action_id: 'post_discord_ko',
-        },
-      ],
-    }
-  : {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `*Fix the issues above, then re-run:*\n\`node _scripts/notify-slack.js ${date}\``,
-      },
-    };
+// Approve buttons always shown — review result is advisory only
+const bottomBlock = {
+  type: 'actions',
+  elements: [
+    {
+      type: 'button',
+      text: { type: 'plain_text', text: '🇺🇸 Post EN to Discord' },
+      style: 'primary',
+      value: `${date}|en`,
+      action_id: 'post_discord_en',
+    },
+    {
+      type: 'button',
+      text: { type: 'plain_text', text: '🇰🇷 Post KO to Discord' },
+      style: 'primary',
+      value: `${date}|ko`,
+      action_id: 'post_discord_ko',
+    },
+  ],
+};
 
 const message = {
   text: `${statusEmoji} CLYPT Daily Review — ${date}`,
