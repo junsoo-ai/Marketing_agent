@@ -1,0 +1,50 @@
+name: Daily Content Generation
+
+on:
+  schedule:
+    - cron: '0 21 * * 1-5'  # 5pm EDT (Mon-Fri) = 21:00 UTC
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to generate (YYYY-MM-DD). Leave blank for today.'
+        required: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Generate daily content
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK }}
+        run: |
+          DATE="${{ github.event.inputs.date }}"
+          if [ -z "$DATE" ]; then
+            DATE=$(TZ=America/New_York date +%Y-%m-%d)
+          fi
+          echo "Generating content for $DATE"
+          node _scripts/generate.js "$DATE"
+
+      - name: Commit generated content
+        run: |
+          DATE="${{ github.event.inputs.date }}"
+          if [ -z "$DATE" ]; then
+            DATE=$(TZ=America/New_York date +%Y-%m-%d)
+          fi
+          git config user.name "ClyptAI Bot"
+          git config user.email "bot@clyptai.com"
+          git add "_content/$DATE/"
+          git diff --staged --quiet && echo "No new content" || git commit -m "content: auto-generate Discord posts for $DATE"
+          git push
