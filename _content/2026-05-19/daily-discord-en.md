@@ -1,23 +1,23 @@
-BTC $76,527 (-2.0% 24h | -4.0% 7d) · ETH $2,104 (-3.7% 24h | -6.3% 7d)
-Nasdaq 26,225 (-1.5% 24h) · S&P 7,389 (-1.4% 24h) · Dow 49,704 (-1.1% 24h)
-Gold $4,544 · WTI $107.7 · Brent $109.5 · DXY 99.2 · 10Y 4.44% · VIX 18.4
-Bitcoin ETFs just snapped a six-week inflow streak with $1B in outflows — and the broader risk complex is not helping the case for a quick recovery.
+BTC $76,342 (-2.2% 24h | -4.1% 7d) · ETH $2,097 (-3.9% 24h | -6.6% 7d)
+Nasdaq 26,065 (-0.6% 24h) · S&P 7,389 (-0.3% 24h) · Dow 49,540 (+0.0% 24h)
+Gold $4,556 · WTI $102.1 · Brent $109.8 · DXY 99.6 · 10Y 4.51% · VIX 19.2
+Bitcoin ETFs shed over $635M in a single session last week — and the macro headwinds that caused it haven't cleared.
 
 Five things worth reading today:
 
-• Bitcoin spot ETFs shed $1.04B this week, ending six consecutive weeks of net inflows. Ethereum ETFs followed with $255M in outflows, contributing directly to ETH's 3.7% single-day drop. Institutional flows are now a near-term headwind.
+• S&P slipped to 7,389 Monday, down 0.3%, as gains remain heavily concentrated in AI-related tech names. Breadth is deteriorating even as the headline index holds near record territory.
 
-• S&P 500 closed at 7,389 on Monday, extending last week's losses. AI-driven semiconductor names partially offset broad selling pressure, but gains remained concentrated in a handful of names rather than representing broad market strength.
+• OPEC cut its 2026 global oil demand growth forecast to 1.17M bpd, down from 1.38M bpd, citing Middle East shipping disruptions. WTI stayed above $102 as Hormuz supply risk continues to dominate the demand signal.
 
-• WTI surged to $107.72 (+2.18%) as the Strait of Hormuz remains effectively closed. MCX June crude became the active contract on May 18 following May contract expiry, with Brent holding $109–$110 on persistent supply disruption.
+• April CPI at 3.8% — above the 3.7% forecast — is keeping Fed rate cut probability near zero. FOMC minutes drop Wednesday; June cut odds sit at 2.6% per market pricing.
 
-• OPEC trimmed its 2026 global oil demand growth forecast to 1.17M bpd from 1.38M bpd, citing geopolitical disruption. Simultaneously, OPEC+ confirmed a gradual production increase through the year, creating a contradictory supply signal for markets.
+• IMF flags global inflation rising to 4.4% in 2026, reversing the prior disinflation trend. Energy prices are forecast up 24% year-over-year, with oil above $100 as the baseline assumption.
 
-• Fed dissent widened at the April meeting — four votes against the hold decision, the most since 1992. Governor Miran pushed for a cut while three regional presidents objected to dovish language. Policy paralysis continues with CPI at 3.8%.
+• Gold futures front month touched $4,556 Monday. Short-term technicals are bearish with resistance at $4,600; J.P. Morgan maintains a Q4 2026 target of $5,055.
 
-Exchange reserves sit at 2.7259M BTC as of today — outflows flipped to net negative overnight with selling pressure confirmed on-chain. The $1B ETF outflow ended a streak that had totaled $2.7B in prior weeks. Institutional positioning has shifted from accumulation to cautious reduction.
+BTC exchange reserves continued declining toward multi-year lows after April's 9,905 BTC single-day inflow spike reversed. Spot ETF flows turned sharply negative — $635M outflows on May 13 broke a six-week streak. Corporate BTC purchases slowed 80% month-over-month. Open interest on BTC futures sits at $61.9B with funding rates broadly negative, indicating net short positioning.
 
-BTC perp OI remains contracted. ETH underperformed BTC again on 24h basis (3.7% vs 2.0%), deepening the altcoin deleveraging signal from yesterday. Hyperliquid BTC-PERP funding sits near neutral — no dominant directional bias despite elevated spot volatility.
+ETH underperformed BTC by 1.7 percentage points on the 24h frame. Hyperliquid BTC-PERP funding at 0.001% per hour — longs barely paying shorts, effectively neutral. No directional conviction at current spot levels.
 
-Level to watch: $76,200 (short-term liquidity shelf).
+Level to watch: $76,000 (key demand floor).
 Regime: Choppy.
