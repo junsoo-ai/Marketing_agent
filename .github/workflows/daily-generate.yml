@@ -9,6 +9,9 @@ on:
         description: 'Date to generate (YYYY-MM-DD). Leave blank for today.'
         required: false
 
+permissions:
+  contents: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -19,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - run: npm ci
@@ -28,7 +31,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK }}
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
         run: |
           DATE="${{ github.event.inputs.date }}"
           if [ -z "$DATE" ]; then
@@ -45,6 +48,7 @@ jobs:
           fi
           git config user.name "ClyptAI Bot"
           git config user.email "bot@clyptai.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git add "_content/$DATE/"
           git diff --staged --quiet && echo "No new content" || git commit -m "content: auto-generate Discord posts for $DATE"
           git push
