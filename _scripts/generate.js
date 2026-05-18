@@ -32,9 +32,13 @@ Warsh just took the Fed chair and the bond market isn't celebrating — 30-year 
 Five things worth reading today:
 
 • S&P dropped 1.24% to 7,409 Friday. Warsh confirmation, yields spiking, and a US-China summit that ended without any trade breakthroughs all landed in the same session.
+
 • US CPI came in at 3.8% in April — above the 3.7% forecast. Energy is up 18% year-over-year. Rate cuts are off the table.
+
 • RBA hiked to 4.35%, third consecutive 2026 increase, 8-1 vote. Middle East energy costs pushed the inflation peak estimate to 4.8% by mid-year.
+
 • IEA forecasts global oil demand contracting 420 kb/d in 2026. Brent still hit $109 because Hormuz supply risk is overriding the weak demand signal.
+
 • Dow fell 537 points to 49,526 on the same Friday session. All major indices closed red as yield pressure dominated.
 
 25,644 BTC left exchanges in 24 hours — reserves now at a 7-year low of 2.21M BTC. Spot ETFs logged nine consecutive inflow days totaling $2.7B through May 9, with BlackRock IBIT and Fidelity FBTC leading. Institutional positioning remains net long despite the pullback from $80K.
@@ -52,9 +56,13 @@ const REF_KO_DISCORD = `BTC $76,934 (-1.0% 24h | -3.5% 7d) · ETH $2,115 (-2.5% 
 주목할 만한 다섯 가지 기사:
 
 • S&P 500, 금요일 1.24% 하락해 7,409 마감. 워시 인준, 금리 급등, 성과 없이 끝난 미중 정상회담이 같은 세션에 겹쳤다.
+
 • 미국 4월 CPI 3.8% 상승 — 예상치 3.7% 상회. 에너지가 전년 대비 18% 올랐다. 금리 인하 가능성은 사실상 소멸했다.
+
 • 호주 중앙은행, 4.35%로 인상 — 2026년 세 번째 연속 인상, 8대 1 표결. 중동발 에너지 비용이 올해 중반 인플레이션 정점 추정치를 4.8%로 끌어올렸다.
+
 • IEA, 2026년 글로벌 원유 수요 420 kb/d 감소 전망. 브렌트유는 호르무즈 공급 리스크가 약한 수요 신호를 압도하며 여전히 $109를 기록했다.
+
 • 다우, 537포인트 하락해 49,526 금요일 마감. 금리 압력이 지배하면서 주요 지수 모두 하락 마감.
 
 24시간 동안 25,644 BTC가 거래소에서 인출됐다 — 보유량이 7년 만의 최저치인 221만 BTC로 감소했다. 현물 ETF는 5월 9일까지 9거래일 연속 순유입을 기록하며 약 27억 달러를 끌어들였고, 블랙록 IBIT와 피델리티 FBTC가 선두.

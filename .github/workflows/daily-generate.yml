@@ -52,3 +52,14 @@ jobs:
           git add "_content/$DATE/"
           git diff --staged --quiet && echo "No new content" || git commit -m "content: auto-generate Discord posts for $DATE"
           git push
+
+      - name: Review and notify Slack
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK }}
+        run: |
+          DATE="${{ github.event.inputs.date }}"
+          if [ -z "$DATE" ]; then
+            DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)
+          fi
+          node _scripts/notify-slack.js "$DATE"
