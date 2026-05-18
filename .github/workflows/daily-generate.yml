@@ -32,7 +32,7 @@ jobs:
         run: |
           DATE="${{ github.event.inputs.date }}"
           if [ -z "$DATE" ]; then
-            DATE=$(TZ=America/New_York date +%Y-%m-%d)
+            DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)
           fi
           echo "Generating content for $DATE"
           node _scripts/generate.js "$DATE"
@@ -41,7 +41,7 @@ jobs:
         run: |
           DATE="${{ github.event.inputs.date }}"
           if [ -z "$DATE" ]; then
-            DATE=$(TZ=America/New_York date +%Y-%m-%d)
+            DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)
           fi
           git config user.name "ClyptAI Bot"
           git config user.email "bot@clyptai.com"
