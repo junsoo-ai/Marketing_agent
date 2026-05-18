@@ -16,12 +16,6 @@ if (!tavilyKey) {
   process.exit(1);
 }
 
-async function fetchJson(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
-  return res.json();
-}
-
 async function tavilySearch(query) {
   const res = await fetch('https://api.tavily.com/search', {
     method: 'POST',
@@ -45,11 +39,19 @@ async function main() {
 
   // 1. Crypto prices from CoinGecko
   console.log('Fetching crypto prices...');
-  const cg = await fetchJson(
-    'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true&include_7d_change=true'
-  );
+  const cgUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true&include_7d_change=true';
+  const cgHeaders = process.env.COINGECKO_API_KEY
+    ? { 'x-cg-demo-api-key': process.env.COINGECKO_API_KEY }
+    : {};
+  const cgRes = await fetch(cgUrl, { headers: cgHeaders });
+  const cg = await cgRes.json();
+  console.log('CoinGecko response:', JSON.stringify(cg).slice(0, 200));
 
-  const fmt = (n, decimals = 1) => (n > 0 ? '+' : '') + n.toFixed(decimals);
+  if (!cg.bitcoin || !cg.ethereum) {
+    throw new Error(`CoinGecko returned unexpected data: ${JSON.stringify(cg)}`);
+  }
+
+  const fmt = (n, decimals = 1) => (n > 0 ? '+' : '') + Number(n).toFixed(decimals);
   const btcPrice = `BTC $${Math.round(cg.bitcoin.usd).toLocaleString()} (${fmt(cg.bitcoin.usd_24h_change)}% 24h | ${fmt(cg.bitcoin.usd_7d_change)}% 7d)`;
   const ethPrice = `ETH $${Math.round(cg.ethereum.usd).toLocaleString()} (${fmt(cg.ethereum.usd_24h_change)}% 24h | ${fmt(cg.ethereum.usd_7d_change)}% 7d)`;
 
