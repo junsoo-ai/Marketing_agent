@@ -23,15 +23,17 @@ async function tavilySearch(query) {
     body: JSON.stringify({
       api_key: tavilyKey,
       query,
-      search_depth: 'basic',
-      max_results: 3,
-      include_answer: false,
+      search_depth: 'advanced',
+      max_results: 5,
+      include_answer: true,
     }),
   });
   const data = await res.json();
-  return (data.results || [])
-    .map(r => `[${r.source || r.url}] ${r.title}\n${(r.content || '').slice(0, 400)}`)
+  const answer = data.answer ? `ANSWER: ${data.answer}\n\n` : '';
+  const results = (data.results || [])
+    .map(r => `[${r.url}] ${r.title}\n${(r.content || '').slice(0, 500)}`)
     .join('\n\n');
+  return answer + results;
 }
 
 async function main() {
@@ -45,105 +47,131 @@ async function main() {
     : {};
   const cgRes = await fetch(cgUrl, { headers: cgHeaders });
   const cg = await cgRes.json();
-  console.log('CoinGecko response:', JSON.stringify(cg).slice(0, 200));
 
   if (!cg.bitcoin || !cg.ethereum) {
     throw new Error(`CoinGecko returned unexpected data: ${JSON.stringify(cg)}`);
   }
 
-  const fmt = (n, decimals = 1) => (n > 0 ? '+' : '') + Number(n).toFixed(decimals);
-  const btcPrice = `BTC $${Math.round(cg.bitcoin.usd).toLocaleString()} (${fmt(cg.bitcoin.usd_24h_change)}% 24h | ${fmt(cg.bitcoin.usd_7d_change)}% 7d)`;
-  const ethPrice = `ETH $${Math.round(cg.ethereum.usd).toLocaleString()} (${fmt(cg.ethereum.usd_24h_change)}% 24h | ${fmt(cg.ethereum.usd_7d_change)}% 7d)`;
+  const fmtPct = (n) => n == null ? '?' : (n > 0 ? '+' : '') + Number(n).toFixed(1);
+  const btcPrice = `BTC $${Math.round(cg.bitcoin.usd).toLocaleString()} (${fmtPct(cg.bitcoin.usd_24h_change)}% 24h | ${fmtPct(cg.bitcoin.usd_7d_change)}% 7d)`;
+  const ethPrice = `ETH $${Math.round(cg.ethereum.usd).toLocaleString()} (${fmtPct(cg.ethereum.usd_24h_change)}% 24h | ${fmtPct(cg.ethereum.usd_7d_change)}% 7d)`;
 
-  // 2. Macro news searches
-  console.log('Searching macro news...');
-  const [macro1, macro2, macro3, macro4, macro5] = await Promise.all([
-    tavilySearch(`global stock markets Nasdaq S&P Dow ${date}`),
-    tavilySearch(`US Federal Reserve interest rates inflation CPI ${date}`),
-    tavilySearch(`oil prices OPEC geopolitics energy ${date}`),
-    tavilySearch(`central bank rate decision trade policy ${date}`),
-    tavilySearch(`US dollar DXY Treasury yields bonds ${date}`),
+  // 2. Market data searches (prices + news)
+  console.log('Searching market data and news...');
+  const [
+    indicesData,
+    commoditiesData,
+    macro1, macro2, macro3,
+    crypto1, crypto2, crypto3, crypto4,
+  ] = await Promise.all([
+    tavilySearch(`Nasdaq S&P 500 Dow Jones closing price today ${date}`),
+    tavilySearch(`Gold WTI Brent crude oil DXY 10-year Treasury yield VIX price today ${date}`),
+    tavilySearch(`major global markets economic news event ${date}`),
+    tavilySearch(`Federal Reserve inflation CPI central bank rate decision ${date}`),
+    tavilySearch(`geopolitics trade policy oil OPEC currency news ${date}`),
+    tavilySearch(`bitcoin exchange outflow inflow reserve on-chain whale ${date}`),
+    tavilySearch(`bitcoin ethereum ETF flows institutional open interest funding rate ${date}`),
+    tavilySearch(`Hyperliquid BTC ETH perpetual funding rate open interest ${date}`),
+    tavilySearch(`bitcoin ethereum key price level support resistance technical ${date}`),
   ]);
 
-  // 3. Crypto signal searches
-  console.log('Searching crypto signals...');
-  const [crypto1, crypto2, crypto3, crypto4, crypto5] = await Promise.all([
-    tavilySearch(`bitcoin exchange flows reserves on-chain ${date}`),
-    tavilySearch(`bitcoin ethereum open interest perpetual funding rate ${date}`),
-    tavilySearch(`bitcoin spot ETF flows Blackrock Fidelity ${date}`),
-    tavilySearch(`Hyperliquid BTC perpetual funding rate open interest ${date}`),
-    tavilySearch(`bitcoin ethereum price support resistance technical level ${date}`),
-  ]);
-
-  // 4. Load previous day content for dedup check
+  // 3. Load previous day content for dedup
   const prevDate = new Date(date);
   prevDate.setDate(prevDate.getDate() - 1);
   const prevDateStr = prevDate.toISOString().slice(0, 10);
   const prevPath = path.join(__dirname, '..', '_content', prevDateStr, 'daily-discord-en.md');
   const prevContent = fs.existsSync(prevPath)
-    ? `PREVIOUS DAY (${prevDateStr}):\n${fs.readFileSync(prevPath, 'utf8')}`
+    ? `PREVIOUS DAY CONTENT (do NOT repeat these stories):\n${fs.readFileSync(prevPath, 'utf8')}`
     : '';
 
-  // 5. Generate with Claude
+  // 4. Generate with Claude
   console.log('Generating with Claude...');
 
-  const prompt = `You are the ClyptAI marketing agent. Generate today's daily Discord posts.
+  const referenceExample = `BTC $76,934 (-1.0% 24h | -3.5% 7d) · ETH $2,115 (-2.5% 24h | -5.8% 7d)
+Nasdaq 26,225 (-1.5% 24h) · S&P 7,409 (-1.2% 24h) · Dow 49,526 (-1.1% 24h)
+Gold $4,544 · WTI $101.0 · Brent $109.3 · DXY 99.2 · 10Y 4.44% · VIX 18.4
+Warsh just took the Fed chair and the bond market isn't celebrating — 30-year yields cleared 5% for the first time since 2007.
 
-Today's date: ${date}
+Five things worth reading today:
 
-LIVE CRYPTO PRICES:
+• S&P dropped 1.24% to 7,409 Friday. Warsh confirmation, yields spiking, and a US-China summit that ended without any trade breakthroughs all landed in the same session.
+• US CPI came in at 3.8% in April — above the 3.7% forecast. Energy is up 18% year-over-year. Rate cuts are off the table.
+• RBA hiked to 4.35%, third consecutive 2026 increase, 8-1 vote. Middle East energy costs pushed the inflation peak estimate to 4.8% by mid-year.
+• IEA forecasts global oil demand contracting 420 kb/d in 2026. Brent still hit $109 because Hormuz supply risk is overriding the weak demand signal.
+• Dow fell 537 points to 49,526 on the same Friday session. All major indices closed red as yield pressure dominated.
+
+25,644 BTC left exchanges in 24 hours — reserves now at a 7-year low of 2.21M BTC. Spot ETFs logged nine consecutive inflow days totaling $2.7B through May 9, with BlackRock IBIT and Fidelity FBTC leading. Institutional positioning remains net long despite the pullback from $80K.
+
+BTC perp OI contracted through the weekend as ETH underperformed BTC on a 24h basis (2.5% vs 1.0%), signaling altcoin deleveraging. Hyperliquid BTC-PERP funding near neutral — no dominant directional bias at current levels.
+
+Level to watch: $79,383 (200-DMA). Spot is 3.3% below it. Daily close above reclaims the trend reference.
+Regime: Choppy.`;
+
+  const prompt = `You are the ClyptAI daily market writer. Generate today's Discord post matching EXACTLY the style, length, and structure of the reference example below.
+
+TODAY'S DATE: ${date}
+
+REFERENCE EXAMPLE (match this format exactly — same depth, same word count ~180 words, same structure):
+${referenceExample}
+
+---
+LIVE CRYPTO PRICES (use these exactly for line 1):
 ${btcPrice}
 ${ethPrice}
 
-MACRO NEWS SEARCH RESULTS:
-Query 1 (markets/indices): ${macro1}
+INDICES & PRICE DATA (extract exact numbers for lines 2-3):
+${indicesData}
 
-Query 2 (Fed/inflation): ${macro2}
+COMMODITIES DATA (Gold, WTI, Brent, DXY, 10Y, VIX for line 3):
+${commoditiesData}
 
-Query 3 (oil/energy): ${macro3}
+MACRO NEWS (pick 5 distinct events, each different region/asset class):
+${macro1}
 
-Query 4 (central banks/trade): ${macro4}
+${macro2}
 
-Query 5 (dollar/bonds): ${macro5}
+${macro3}
 
-CRYPTO SIGNAL SEARCH RESULTS:
-Query 1 (exchange flows/on-chain): ${crypto1}
+CRYPTO SIGNALS:
+${crypto1}
 
-Query 2 (OI/funding rate): ${crypto2}
+${crypto2}
 
-Query 3 (ETF flows): ${crypto3}
+${crypto3}
 
-Query 4 (Hyperliquid): ${crypto4}
-
-Query 5 (price levels): ${crypto5}
+${crypto4}
 
 ${prevContent}
 
-DISCORD FORMAT RULES:
-- Line 1: BTC and ETH with 24h% AND 7d% (use the live prices above exactly as given)
-- Line 2: Nasdaq/S&P/Dow with 24h% only (extract from search results)
-- Line 3: Gold, WTI, Brent, DXY, 10Y, VIX — spot price only, no %
-- Exactly 5 macro bullet points — each a distinct event from different regions/assets
-- One crypto on-chain paragraph (exchange flows, ETF, whale/institutional)
-- One perp paragraph (OI, funding rate, must mention Hyperliquid)
-- End with "Level to watch: $X (indicator). Spot X% below/above. Regime: [Trending/Choppy/High-Vol/Ranging]."
-- 150–200 words total
-- No AI filler phrases. All numbers specific. Variable sentence lengths.
-- No competitor names. No price predictions.
-- Do not repeat stories from the previous day.
+---
+STRICT FORMAT RULES — violations will cause rejection:
+1. Line 1: "BTC $X (±X.X% 24h | ±X.X% 7d) · ETH $X (±X.X% 24h | ±X.X% 7d)" — use live prices above
+2. Line 2: "Nasdaq X,XXX (±X.X% 24h) · S&P X,XXX (±X.X% 24h) · Dow XX,XXX (±X.X% 24h)" — extract from search data
+3. Line 3: "Gold $X,XXX · WTI $XXX.X · Brent $XXX.X · DXY XX.X · 10Y X.XX% · VIX XX.X" — spot prices only
+4. One punchy intro sentence summarizing the biggest macro theme of the day
+5. "Five things worth reading today:" header — exactly this text
+6. Exactly 5 bullet points (•), each covering a DIFFERENT story/region/asset
+7. One on-chain paragraph: exchange flows + ETF flows + institutional positioning (specific numbers)
+8. One perp paragraph: OI + funding rate + Hyperliquid mention (specific numbers)
+9. Last line: "Level to watch: $X (indicator). Spot X.X% below/above it. [one-sentence context]"
+10. Final line: "Regime: [Trending/Choppy/High-Vol/Ranging]."
+11. NO markdown — no **, no ##, no [], no backticks
+12. NO vague language — every number must be specific
+13. 170–200 words total
+14. Each bullet: 1-2 sentences max, punchy, data-led, variable length
 
-OUTPUT FORMAT — use these exact markers, nothing outside them:
+OUTPUT FORMAT — nothing outside these markers:
 ===DISCORD_EN===
-[English Discord post here]
+[English content]
 ===END_DISCORD_EN===
 
 ===DISCORD_KO===
-[Korean Discord post here — natural Korean financial writing, not a translation]
+[Korean content — natural Korean financial writing, same structure, not a word-for-word translation]
 ===END_DISCORD_KO===`;
 
   const msg = await client.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 2048,
+    max_tokens: 3000,
     messages: [{ role: 'user', content: prompt }],
   });
 
@@ -157,14 +185,13 @@ OUTPUT FORMAT — use these exact markers, nothing outside them:
     process.exit(1);
   }
 
-  // 6. Save files
   const contentDir = path.join(__dirname, '..', '_content', date);
   fs.mkdirSync(contentDir, { recursive: true });
   fs.writeFileSync(path.join(contentDir, 'daily-discord-en.md'), enMatch[1].trim() + '\n');
   fs.writeFileSync(path.join(contentDir, 'daily-discord-ko.md'), koMatch[1].trim() + '\n');
 
-  console.log(`Saved to _content/${date}/daily-discord-en.md`);
-  console.log(`Saved to _content/${date}/daily-discord-ko.md`);
+  console.log(`Saved _content/${date}/daily-discord-en.md`);
+  console.log(`Saved _content/${date}/daily-discord-ko.md`);
 }
 
 main().catch(err => {
