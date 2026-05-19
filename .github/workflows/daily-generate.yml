@@ -27,25 +27,26 @@ jobs:
 
       - run: npm ci
 
+      - name: Set target date
+        run: |
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            echo "DATE=${{ github.event.inputs.date }}" >> $GITHUB_ENV
+          else
+            echo "DATE=$(TZ=America/New_York date -d '+1 day' +%Y-%m-%d)" >> $GITHUB_ENV
+          fi
+          echo "Target date: $DATE"
+
       - name: Generate daily content
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
         run: |
-          DATE="${{ github.event.inputs.date }}"
-          if [ -z "$DATE" ]; then
-            DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)
-          fi
           echo "Generating content for $DATE"
           node _scripts/generate.js "$DATE"
 
       - name: Commit generated content
         run: |
-          DATE="${{ github.event.inputs.date }}"
-          if [ -z "$DATE" ]; then
-            DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)
-          fi
           git config user.name "ClyptAI Bot"
           git config user.email "bot@clyptai.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
@@ -57,9 +58,4 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK }}
-        run: |
-          DATE="${{ github.event.inputs.date }}"
-          if [ -z "$DATE" ]; then
-            DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)
-          fi
-          node _scripts/notify-slack.js "$DATE"
+        run: node _scripts/notify-slack.js "$DATE"

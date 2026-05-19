@@ -7,7 +7,12 @@ const Anthropic = require('@anthropic-ai/sdk');
 const fs = require('fs');
 const path = require('path');
 
-const date = process.argv[2] || new Date().toISOString().slice(0, 10);
+const date = process.argv[2] || (() => {
+  // fallback: next day in US Eastern time (matches scheduled run intent)
+  const d = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().slice(0, 10);
+})();
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const tavilyKey = process.env.TAVILY_API_KEY;
 
