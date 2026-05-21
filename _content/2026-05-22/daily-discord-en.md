@@ -1,23 +1,23 @@
-BTC $77,836 (+0.5% 24h | ?% 7d) · ETH $2,135 (+0.1% 24h | ?% 7d)
-Nasdaq 26,635 (+1.2% 24h) · S&P 7,501 (+0.0% 24h) · Dow 50,063 (+1.2% 24h)
-Gold $4,563 · WTI $102.4 · Brent $108.6 · DXY 98.9 · 10Y 4.51% · VIX 17.6
-Equities are rotating under the surface — the Dow cleared 50,000 again while the S&P flatlined and crypto drifted into the weekend with no conviction.
+BTC $77,544 (+0.4% 24h | +1.0% 7d) · ETH $2,131 (+0.6% 24h | +1.0% 7d)
+Nasdaq 26,361 (+0.3% 24h) · S&P 7,456 (-0.6% 24h) · Dow 50,279 (+1.6% 24h)
+Gold $4,867 · WTI $101.2 · Brent $107.1 · DXY 99.1 · 10Y 4.51% · VIX 17.2
+Middle East peace optimism is doing the heavy lifting — oil retreated, yields pulled back, and the Dow crossed 50,000 for the first time.
 
 Five things worth reading today:
 
-• Dow Jones crossed 50,063 Friday, led by Goldman Sachs, Nike, and Boeing. The S&P held at 7,501 with no meaningful move — breadth was narrow and tech lagged.
+• Dow crossed 50,000 on May 21, gaining 269 points to 50,279 as Treasury yields pulled back and oil prices retreated on US-Iran deal optimism. S&P slipped 0.6% to 7,456 as rotation out of tech weighed.
 
-• Digital asset funds recorded $1.07 billion in outflows for the week ending May 18, the first negative week in seven and the third-largest weekly outflow of 2026. Iran-related tensions were cited as the primary trigger.
+• US April CPI held at 3.8% annually — core at 2.8% — with energy prices up 3.8% month-over-month accounting for over 40% of the headline increase. The Fed's next move is now priced for mid-2027 at earliest.
 
-• OPEC cut its 2026 global oil demand growth forecast to 1.17M bpd from 1.38M bpd. Brent is holding near $108 as Hormuz risk continues to override the bearish demand revision.
+• S&P Global's May 2026 outlook pushed the Fed's first rate cut to mid-2027, citing persistent core inflation. Futures markets are now pricing a higher probability of a hike than a cut in the near term.
 
-• Bitcoin options market saw a whale turn net bearish ahead of a $2 billion BTC and ETH options expiry — the positioning shift is drawing attention from derivatives desks.
+• OPEC cut its 2026 oil demand growth forecast to 1.17M bpd from 1.38M bpd, citing trade disruption and slowing industrial output. Brent held above $107 as Hormuz supply risk continues to override the bearish demand signal.
 
-• Fed minutes signaled higher-for-longer rates remain the base case as May inflation tracking stays elevated. No rate cut catalyst is visible through Q3.
+• Goldman Sachs maintains a year-end gold target of $5,400 despite the pullback from January's $5,589 all-time high, calling the correction a buying opportunity as central banks continue shifting reserves into bullion.
 
-Bitcoin perpetual OI rose in tandem with exchange stablecoin reserves this week, suggesting fresh capital entering rather than existing position recycling. ETF flows flipped to net outflows for the week at $1.07B, with Bitcoin accounting for $982M of that figure. Exchange reserves continue declining on a longer time horizon, supporting a conviction-accumulation read.
+Bitcoin exchange reserves remain near multi-year lows around 2.43–2.72M BTC. Spot ETF flows have returned to net positive territory with BlackRock IBIT and Fidelity FBTC continuing to absorb institutional demand. April cumulative ETF inflows totaled $2.44B, with no sustained outflow streak materializing.
 
-Hyperliquid BTC-PERP funding steady at +0.51% annualized — OI elevated but no aggressive directional crowding. ETH perp slightly underperforming BTC on a 24h basis, mild altcoin drag persists.
+Hyperliquid BTC-PERP funding is near neutral at 0.001% per hour with OI at $2.13B — longs paying shorts, no dominant directional pressure. ETH-PERP OI sits at $1.14B with matching 0.001% funding, signaling the market is holding a balanced book at current levels without strong conviction.
 
-Level to watch: $78,500 (short-term supply ceiling).
+Level to watch: $78,200 (short-term supply ceiling).
 Regime: Choppy.
